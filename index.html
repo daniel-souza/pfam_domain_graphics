@@ -1,42 +1,29 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Pfam domain graphics by acabunoc</title>
-    
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Pfam domain graphics</h1>
-        <p>port the domain_graphics javascript library from Pfam to work using jQuery instead of prototype. For use on WormBase.</p>
-        <p class="view"><a href="https://github.com/acabunoc/pfam_domain_graphics">View the Project on GitHub <small>acabunoc/pfam_domain_graphics</small></a></p>
-        <ul>
-          <li><a href="https://github.com/acabunoc/pfam_domain_graphics/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/acabunoc/pfam_domain_graphics/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/acabunoc/pfam_domain_graphics">Fork On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>Pfam domain graphics - jQuery</h1>
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>Pfam domain graphics demo</title>
+</head>
 
-<p>This ports over the script used by generate graphic tool from pfam to use jQuery instead of prototype for use in the WormBase website.</p>
+<body>
+<h1>Pfam domain graphics - jQuery</h1>
+Ported over
+<a href="http://pfam.sanger.ac.uk/generate_graphic">Pfam generate graphic tool</a>
+to use jQuery. 
+<br /><br />Created so WormBase could have inline Pfam-style domain graphics without loading prototype/using an ifram/deal with both prototype and jQuery.
+<h3>UNC-26A:</h3>
+<div class="pfam_graph" id="dg-interpro" data-seq="   {&quot;length&quot;:1113 ,   &quot;regions&quot;:[{&quot;colour&quot;:&quot;#ffa500&quot; ,   &quot;endStyle&quot;:&quot;straight&quot; ,   &quot;startStyle&quot;:&quot;straight&quot; ,   &quot;end&quot;:&quot;835&quot; ,      &quot;href&quot;:&quot;&quot;  ,   &quot;text&quot;:&quot;Ino&quot; ,   &quot;metadata&quot;:{&quot;database&quot;:&quot;interpro&quot; ,   &quot;identifier&quot;:&quot;INTERPRO:IPR000300(e-value:0)&quot; ,   &quot;description&quot;:&quot;Inositol polyphosphate-related phosphatase&quot; ,   &quot;end&quot;:&quot;835&quot;} ,   &quot;start&quot;:&quot;519&quot;} ,   {&quot;colour&quot;:&quot;#86bcff&quot; ,   &quot;endStyle&quot;:&quot;straight&quot; ,   &quot;startStyle&quot;:&quot;straight&quot; ,   &quot;end&quot;:&quot;827&quot; ,      &quot;href&quot;:&quot;&quot;  ,   &quot;text&quot;:&quot;End&quot; ,   &quot;metadata&quot;:{&quot;database&quot;:&quot;interpro&quot; ,   &quot;identifier&quot;:&quot;INTERPRO:IPR005135(e-value:0)&quot; ,   &quot;description&quot;:&quot;Endonuclease/exonuclease/phosphatase&quot; ,   &quot;end&quot;:&quot;827&quot;} ,   &quot;start&quot;:&quot;523&quot;} ,   {&quot;colour&quot;:&quot;#00ffff&quot; ,   &quot;endStyle&quot;:&quot;straight&quot; ,   &quot;startStyle&quot;:&quot;straight&quot; ,   &quot;end&quot;:&quot;338&quot; ,      &quot;href&quot;:&quot;&quot;  ,   &quot;text&quot;:&quot;Syn&quot; ,   &quot;metadata&quot;:{&quot;database&quot;:&quot;interpro&quot; ,   &quot;identifier&quot;:&quot;INTERPRO:IPR002013(e-value:0)&quot; ,   &quot;description&quot;:&quot;Synaptojanin ,    N-terminal&quot; ,   &quot;end&quot;:&quot;338&quot;} ,   &quot;start&quot;:&quot;59&quot;} ,   {&quot;colour&quot;:&quot;#ff7ff0&quot; ,   &quot;endStyle&quot;:&quot;straight&quot; ,   &quot;startStyle&quot;:&quot;straight&quot; ,   &quot;end&quot;:&quot;968&quot; ,      &quot;href&quot;:&quot;&quot;  ,   &quot;text&quot;:&quot;Dom&quot; ,   &quot;metadata&quot;:{&quot;database&quot;:&quot;interpro&quot; ,   &quot;identifier&quot;:&quot;INTERPRO:IPR015047(e-value:0)&quot; ,   &quot;description&quot;:&quot;Domain of unknown function DUF1866&quot; ,   &quot;end&quot;:&quot;968&quot;} ,   &quot;start&quot;:&quot;828&quot;}] ,   &quot;markups&quot;:[{&quot;colour&quot;:&quot;#000000&quot; ,   &quot;v_align&quot;:&quot;bottom&quot; ,   &quot;metadata&quot;:{&quot;type&quot;:&quot;exon1&quot;} ,   &quot;end&quot;:40 ,   &quot;start&quot;:0} ,   {&quot;colour&quot;:&quot;#000000&quot; ,   &quot;v_align&quot;:&quot;bottom&quot; ,   &quot;metadata&quot;:{&quot;type&quot;:&quot;exon2&quot;} ,   &quot;end&quot;:117 ,   &quot;start&quot;:41} ,   {&quot;colour&quot;:&quot;#000000&quot; ,   &quot;v_align&quot;:&quot;bottom&quot; ,   &quot;metadata&quot;:{&quot;type&quot;:&quot;exon3&quot;} ,   &quot;end&quot;:180 ,   &quot;start&quot;:118} ,   {&quot;colour&quot;:&quot;#000000&quot; ,   &quot;v_align&quot;:&quot;bottom&quot; ,   &quot;metadata&quot;:{&quot;type&quot;:&quot;exon4&quot;} ,   &quot;end&quot;:278 ,   &quot;start&quot;:181} ,   {&quot;colour&quot;:&quot;#000000&quot; ,   &quot;v_align&quot;:&quot;bottom&quot; ,   &quot;metadata&quot;:{&quot;type&quot;:&quot;exon5&quot;} ,   &quot;end&quot;:498 ,   &quot;start&quot;:279} ,   {&quot;colour&quot;:&quot;#000000&quot; ,   &quot;v_align&quot;:&quot;bottom&quot; ,   &quot;metadata&quot;:{&quot;type&quot;:&quot;exon6&quot;} ,   &quot;end&quot;:753 ,   &quot;start&quot;:499} ,   {&quot;colour&quot;:&quot;#000000&quot; ,   &quot;v_align&quot;:&quot;bottom&quot; ,   &quot;metadata&quot;:{&quot;type&quot;:&quot;exon7&quot;} ,   &quot;end&quot;:846 ,   &quot;start&quot;:754} ,   {&quot;colour&quot;:&quot;#000000&quot; ,   &quot;v_align&quot;:&quot;bottom&quot; ,   &quot;metadata&quot;:{&quot;type&quot;:&quot;exon8&quot;} ,   &quot;end&quot;:968 ,   &quot;start&quot;:847} ,   {&quot;colour&quot;:&quot;#000000&quot; ,   &quot;v_align&quot;:&quot;bottom&quot; ,   &quot;metadata&quot;:{&quot;type&quot;:&quot;exon9&quot;} ,   &quot;end&quot;:1113 ,   &quot;start&quot;:969}]}   "><canvas width="563" height="50"></canvas></div>
+</body>
 
-<p>Not fully tested. </p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/acabunoc">acabunoc</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="js/domain_graphics.js"></script>
+
+<script>
+    $jq(".pfam_graph").each(function() { 
+        var p = PfamGraphic;
+        p.initialize();
+        p.render("#" + this.id, $jq("#" + this.id).data("seq"));
+    })
+</script>
+
 </html>
