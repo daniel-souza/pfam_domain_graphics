@@ -10,13 +10,13 @@
 //- polyfils --------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
-$jq = jQuery.noConflict();
+$ = jQuery.noConflict();
 Array.max = function( array ){
     return Math.max.apply( Math, array );
 };
     
 Array.prototype.flatten = function() {
-  return $jq.map( this, function(n){
+  return $.map( this, function(n){
     if(n)
       return n;
   });
@@ -354,7 +354,7 @@ var PfamGraphic =  {
    * @returns {PfamGraphic} reference to this object
    */
   setParent: function( parent ) {
-    this._parent = $jq(parent);
+    this._parent = $(parent);
 
     if ( this._parent === undefined || this._parent === null ) {
       this._throw( "couldn't find the parent node" );
@@ -578,7 +578,7 @@ var PfamGraphic =  {
     }
 
     // everything passes. Stash it
-    this._sequence = JSON.parse(sequence);
+    this._sequence = eval( "sequence = " + sequence ); //JSON.parse(sequence);
 
     //----------------------------------
 
@@ -614,18 +614,32 @@ var PfamGraphic =  {
 
     // build the markups (lollipops, etc.). This will calculate the heights
     // of the various markup elements, without actually drawing them
-    this._buildMarkups();
-
+    if ( sequence.markups != null ) {
+		this._buildMarkups();
+	}
+	
     // find the maximum of three values, in order to determine the top
     // extent (and then bottom extent) for the graphical elements:
     //   o maximum top extend for lollipops
     //   o maximum top extend for bridges
     //   o half the domain height
-    this._canvasHeight = Array.max([ this._heights.lollipops.upMax,
-                           this._heights.bridges.upMax,
+    var lollipopUpMaxHeight = 0; var lollipopDownMaxHeight = 0;
+    var bridgeUpMaxHeight = 0; var bridgeDownMaxHeight = 0;
+    if ( this._heights != null ) {
+		if ( this._heights.lollipops != null ) {
+			lollipopUpMaxHeight = this._heights.lollipops.upMax;
+			lollipopDownMaxHeight = this._heights.lollipops.downMax;
+		}
+		if ( this._heights.bridges != null ) {
+			bridgeUpMaxHeight = this._heights.bridges.upMax;
+			bridgeDownMaxHeight = this._heights.bridges.downMax;
+		}
+	}
+    this._canvasHeight = Array.max([ lollipopUpMaxHeight,
+                           bridgeUpMaxHeight,
                            ( this._regionHeight / 2 + 1 ) ]) +
-                         Array.max([ this._heights.lollipops.downMax,
-                           this._heights.bridges.downMax,
+                         Array.max([ lollipopDownMaxHeight,
+                           bridgeDownMaxHeight,
                            ( this._regionHeight / 2 + 1 ) ]) + 1;
                          // that single pixel is just a fudge factor...
 
@@ -653,8 +667,8 @@ var PfamGraphic =  {
 
     // set the baseline, relative to which the various elements will
     // actually be drawn
-    this._baseline = Array.max([ this._heights.lollipops.upMax || 0,
-                       this._heights.bridges.upMax || 0,
+    this._baseline = Array.max([ lollipopUpMaxHeight || 0,
+                       bridgeUpMaxHeight || 0,
                        ((this._imageParams.regionHeight || 0) / 2) ]) + 1;
                        // that single pixel is just a fudge factor...
     return this;
@@ -895,7 +909,7 @@ var PfamGraphic =  {
     canvas.height = height;
 
     // add the new <canvas> to the parent and generate an identifier for it
-    $jq(this._parent).append( canvas );
+    $(this._parent).append( canvas );
 //     canvas.identify();
 
     // make sure it gets initialised in bloody IE...
@@ -946,7 +960,7 @@ var PfamGraphic =  {
     // add a listener for mouse movements over the canvas
     // console.log( "PfamGraphic._addListeners: adding listener to |%s|",
     //   this._canvas.identify() );
-//     $jq(this._canvas).bind( "mousemove", function( e ) {
+//     $(this._canvas).bind( "mousemove", function( e ) {
 // 
 //       // find out where the event originated
 //       var activeCanvas = e.findElement("canvas");
@@ -1060,7 +1074,7 @@ var PfamGraphic =  {
     //----------------------------------
 
     // watch for clicks on areas with URLs
-    $jq(this._canvas).click(function( e ) {
+    $(this._canvas).click(function( e ) {
       this._handleClick( e );
     }.bind( this ) );
 
@@ -1190,7 +1204,7 @@ var PfamGraphic =  {
     
     // flatten to get rid of nested arrays and then strip out slots with 
     // "undefined" as a value
-    orderedMarkups = $jq.map( orderedMarkups, function(n){
+    orderedMarkups = $.map( orderedMarkups, function(n){
                             if(n)
                               return n;
                           });
@@ -1223,7 +1237,7 @@ var PfamGraphic =  {
       }
 
       if ( markup.headStyle !== undefined &&
-           ! ($jq.inArray(markup.headStyle, ms.lollipopHeadValues) > -1) ) {
+           ! ($.inArray(markup.headStyle, ms.lollipopHeadValues) > -1) ) {
         this._throw( "markup 'headStyle' value is not valid: '" + 
                      markup.headStyle + "'" );
       }
@@ -1310,7 +1324,7 @@ var PfamGraphic =  {
         //   bridgeHeight );
 
       } else { 
-        if ( $jq.inArray(bridgeHeight, hb.slice( start, end ).flatten()) > -1 ) {
+        if ( $.inArray(bridgeHeight, hb.slice( start, end ).flatten()) > -1 ) {
 
           bridgeHeight = maxBridgeHeight + ip.bridgeToBridgeIncrement;
 
@@ -1355,7 +1369,7 @@ var PfamGraphic =  {
       // height if so
       // console.log( "PfamGraphic._buildMarkups: checking again for a bridge at this height (%d)",
       //   bridgeHeight );
-      while ( $jq.inArray(bridgeHeight, hb.slice( start, end ).flatten()) > -1) {
+      while ( $.inArray(bridgeHeight, hb.slice( start, end ).flatten()) > -1) {
 
         bridgeHeight += ip.bridgeToBridgeIncrement;
         
@@ -1430,29 +1444,37 @@ var PfamGraphic =  {
     // draw the sequence
     var seqArea = this._drawSequence();
     
-    // draw the briges
-    for(var i=-1, bridge; (bridge = this._heights.bridges.markups[++i]);){
-      if ( bridge.display !== undefined &&
-           bridge.display !== null &&
-           ! bridge.display ) {
-        continue;
-      }
-      this._drawBridge( bridge );
-    }
-
-    // draw the lollipops after the bridges, so that the heads appear on top of
-    // any overlapping bridges and draw them in reserve order, so that, where two
-    // lollipops fall close to each other, the left-most lollipop is drawn above
-    // the other
-    for(var i=-1, lollipop; (lollipop = this._heights.lollipops.markups.reverse()[++i]);){
-      if ( lollipop.display !== undefined &&
-           lollipop.display !== null &&
-           ! lollipop.display ) {
-        continue;
-      }
-      this._drawLollipop( lollipop );
-    }
-
+    if ( this._heights != null ) {
+		if ( this._heights.bridges != null ) {
+			// draw the briges
+			for(var i=-1, bridge; (bridge = this._heights.bridges.markups[++i]);){
+			  if ( bridge.display !== undefined &&
+				   bridge.display !== null &&
+				   ! bridge.display ) {
+				continue;
+			  }
+			  this._drawBridge( bridge );
+			}
+		}
+		
+		if ( this._heights.lollipops != null ) {
+			// draw the lollipops after the bridges, so that the heads appear on top of
+			// any overlapping bridges and draw them in reserve order, so that, where two
+			// lollipops fall close to each other, the left-most lollipop is drawn above
+			// the other
+			for(var i=-1, lollipop; (lollipop = this._heights.lollipops.markups.reverse()[++i]);){
+			  if ( lollipop.display !== undefined &&
+				   lollipop.display !== null &&
+				   ! lollipop.display ) {
+				continue;
+			  }
+			  this._drawLollipop( lollipop );
+			}
+		}
+	}
+	
+	console.log(this._sequence);
+	
     // draw the regions
     for(var i=-1, region; (region = this._sequence.regions[++i]);){
       if ( region.display !== undefined && 
@@ -1961,11 +1983,11 @@ var PfamGraphic =  {
    */
   _drawRegion: function( region ) {
     // console.log( "PfamGraphic._drawRegion: drawing region..." );
-    if ( ! ($jq.inArray(region.startStyle, this._markupSpec.regionEndValues)  > -1 ) ) {
+    if ( ! ($.inArray(region.startStyle, this._markupSpec.regionEndValues)  > -1 ) ) {
       this._throw( "region start style is not valid: '" + region.startStyle + "'" );
     }
 
-    if ( ! ($jq.inArray(region.endStyle, this._markupSpec.regionEndValues) > -1 ) ) {
+    if ( ! ($.inArray(region.endStyle, this._markupSpec.regionEndValues) > -1 ) ) {
       this._throw( "region end style is not valid: '" + region.endStyle + "'" );
     }
     //----------------------------------
@@ -2548,13 +2570,18 @@ var PfamGraphic =  {
    * @param {boolean} left whether this is the left edge of the region
    */
   _drawJagged: function( x, y, height, left ) {
-
+	
     // make sure we have an even number of steps
     var steps = parseInt( this._imageParams.largeJaggedSteps, 10 );
     steps += steps % 2;
+    
+    console.log ("log1: " +  steps );
 
     // get the list of Y-coords
     var yShifts = this._getSteps( height, steps );
+    
+    console.log ("log2: " + yShifts );
+
 
     // the step size, in pixels. This is used when stepping on X
     var step = height / steps;
@@ -2615,14 +2642,12 @@ var PfamGraphic =  {
         yShifts.push( ( height / 2 ) - ( i * step ) );
         yShifts.push( ( height / 2 ) + ( i * step ) );
       }
-
+      
       // uniquify and (numerically) sort the list of Y-coords
-      list = yShifts.uniq().sort( function (a, b) { return a - b; } );
-
-      // cache the list for later
-      this._cache[cacheKey] = list;
-    }
-
+      list = $.unique(yShifts).sort( function (a, b) { return a - b; } );
+	  // cache the list for later
+	  this._cache[cacheKey] = list;
+	}
     return list;
   },
 
